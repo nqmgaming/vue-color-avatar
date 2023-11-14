@@ -27,12 +27,12 @@ jobs:
       - name: Set up Docker
         uses: docker/setup-buildx-action@v1
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         run: |
-          docker build . --file Dockerfile --tag nqmgaming/avatar:$(date +%Y%m%d%H%M%S)
+          export IMAGE_TAG=nqmgaming/avatar:$(date +%Y%m%d%H%M%S)
+          docker build . --file Dockerfile --tag $IMAGE_TAG
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker push nqmgaming/avatar:$(date +%Y%m%d%H%M%S)
-
+          docker push $IMAGE_TAG
 
   deploy:
     runs-on: ubuntu-latest
